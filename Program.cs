@@ -126,6 +126,8 @@ namespace LaberintoPruebaConsola
                         next = pibote.Derecha();
                         if (EstaAdentroDelMaze(next) && MePuedoMover(next))
                         {
+                            
+                            
                             if (!Pila2.Contains(next) && !Pila1.Contains(next))
                             {
                                 Pila2.Push(next);
@@ -135,6 +137,33 @@ namespace LaberintoPruebaConsola
                         next = pibote.Izquierda();
                         if (EstaAdentroDelMaze(next) && MePuedoMover(next))
                         {
+                            if (Pila1.Contains(next))
+                            {
+                                Console.WriteLine("la pila next esta adentro");
+                            }
+                            if (next.Equals(laber[0, 0]))
+                            {
+                                Console.WriteLine("la pila next es la posicion inicial");
+                            }
+                            if (next== laber[0,0])
+                            {
+                                Console.WriteLine("la pila next es la posicion inicial");
+                            }
+
+
+                            if (!Pila1.Contains(next))//aqui si acepta que ya hay uno igual adentro
+                            {
+                                Console.WriteLine("!la pila next esta adentro");
+                            }
+                            if (Pila2.Contains(next))
+                            {
+                                Console.WriteLine(" next ya esta en pila2 esta adentro");
+                            }
+                            if (!Pila2.Contains(next))//me dice que no hay uno igual adentro
+                            {
+                                Console.WriteLine("!next ya esta en pila2 adentro");
+                            }
+
                             if (!Pila2.Contains(next) && !Pila1.Contains(next))
                             {
                                 Pila2.Push(next);
