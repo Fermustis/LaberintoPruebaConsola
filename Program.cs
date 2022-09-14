@@ -42,11 +42,11 @@ namespace LaberintoPruebaConsola
             {
                 //   laberinto= new int[,]{ {1,1,1,1 },{0,1,1,0, },{0,1,1,0 },{0,0,1,1 },{0,0,0,1 } };
                 // CoordinateAndValue coordinateAndValue1 = new CoordinateAndValue(0, 0, 1);
-                laber = new CoordinateAndValue[,] { { new(0,0,1) , new(0, 1, 1), new(0, 2, 1), new(0, 3, 1) },
-                                                         {new(1,0,0) , new(1, 1, 1), new(1, 2, 1), new(1, 3, 0) },
-                                                         { new(2,0,0) , new(2, 1, 1), new(2, 2, 1), new(2, 3, 0) },
-                                                         { new(3,0,0) , new(3, 1, 0), new(3, 2, 1), new(3, 3, 1) },
-                                                         { new(4,0,0) , new(4, 1, 0), new(4, 2, 0), new(4, 3, 1) } };
+                laber = new CoordinateAndValue[,] { { new CoordinateAndValue(0,0,1) , new CoordinateAndValue(0, 1, 1), new CoordinateAndValue(0, 2, 1), new CoordinateAndValue(0, 3, 1) },
+                                                         {new CoordinateAndValue(1,0,0) , new CoordinateAndValue(1, 1, 1), new CoordinateAndValue(1, 2, 1), new CoordinateAndValue(1, 3, 0) },
+                                                         { new CoordinateAndValue(2,0,0) , new CoordinateAndValue(2, 1, 1), new CoordinateAndValue(2, 2, 1), new CoordinateAndValue(2, 3, 0) },
+                                                         { new CoordinateAndValue(3,0,0) , new CoordinateAndValue(3, 1, 0), new CoordinateAndValue(3, 2, 1), new CoordinateAndValue(3, 3, 1) },
+                                                         { new CoordinateAndValue(4,0,0) , new CoordinateAndValue(4, 1, 0), new CoordinateAndValue(4, 2, 0), new CoordinateAndValue(4, 3, 1) } };
             }
             public void imprimirLaberinto()
             {
@@ -73,7 +73,7 @@ namespace LaberintoPruebaConsola
                 CoordinateAndValue[,] TemporaryPosition = new CoordinateAndValue[1, 1];
                 TemporaryPosition[0, 0] = laber[0,0];
                 Pila2.Push(TemporaryPosition[0,0]);
-             //   int i = 0, j = 0;
+            
                 
                 while (Pila2.Count != 0)
                 {
@@ -88,10 +88,11 @@ namespace LaberintoPruebaConsola
                         //  TemporaryPosition[0,0] = Pila2.Pop();
                         // moverse de posicion
                         #region moverse
-                        CoordinateAndValue pibote, next;
-                        pibote = Pila2.Pop();
+                        CoordinateAndValue PositionTemporary, next;
+                        PositionTemporary = Pila2.Pop();
+                        Console.WriteLine($"sacando de de pila 2 {PositionTemporary.posX()},{PositionTemporary.posY()}");
 
-                        if (pibote.posX() == filas - 1 && pibote.posY() == columnas - 1)
+                        if (PositionTemporary.posX() == filas - 1 && PositionTemporary.posY() == columnas - 1)
                         {
                             Console.WriteLine("LLEGAMOS!");
                             while (Pila1.Count != 0)
@@ -103,69 +104,98 @@ namespace LaberintoPruebaConsola
                             break;
                         }
                         int ElemtosDePila = Pila2.Count;
-                        next = pibote.Arriba();
-                        if (EstaAdentroDelMaze(next) && MePuedoMover(next))
-                        {
-
-                            if (!Pila2.Contains(next) && !Pila1.Contains(next))
-                            {
-                                Pila2.Push(next);
-                                Console.WriteLine($"Guardando Pila2 {next.posX()},{next.posY()}\n ");
-                            }
-
-                        }
-                        next = pibote.Abajo();
-                        if (EstaAdentroDelMaze(next) && MePuedoMover(next))
-                        {
-                            if (!Pila2.Contains(next) && !Pila1.Contains(next))
-                            {
-                                Pila2.Push(next);
-                                Console.WriteLine($"Guardando Pila2 {next.posX()},{next.posY()}\n ");
-                            }
-                        }
-                        next = pibote.Derecha();
+                        next = PositionTemporary.Arriba();
                         if (EstaAdentroDelMaze(next) && MePuedoMover(next))
                         {
 
 
-                            if (!Pila2.Contains(next) && !Pila1.Contains(next))
+                            if (!Pila2.Contains(laber[next.posX(), next.posY()]))
                             {
-                                Pila2.Push(next);
-                                Console.WriteLine($"Guardando Pila2 {next.posX()},{next.posY()}\n ");
+                                bool estaAdentro = Pila1.Contains(laber[next.posX(), next.posY()]);
+                                if (estaAdentro == false)
+                                {
+                                    Pila2.Push(laber[next.posX(), next.posY()]);
+                                    Console.WriteLine($"Guardando en Pila2 {next.posX()},{next.posY()}\n ");
+                                }
+
+                            }
+
+                        }
+                        next = PositionTemporary.Abajo();
+                        if (EstaAdentroDelMaze(next) && MePuedoMover(next))
+                        {
+
+                            if (!Pila2.Contains(laber[next.posX(), next.posY()]))
+                            {
+                                bool estaAdentro = Pila1.Contains(laber[next.posX(), next.posY()]);
+                                if (estaAdentro == false)
+                                {
+                                    Pila2.Push(laber[next.posX(), next.posY()]);
+                                    Console.WriteLine($"Guardando en Pila2 {next.posX()},{next.posY()}\n ");
+                                }
+
                             }
                         }
-                        next = pibote.Izquierda();
+                        next = PositionTemporary.Derecha();
                         if (EstaAdentroDelMaze(next) && MePuedoMover(next))
-                        {/*
+                        {
+
+
+
+                            if (!Pila2.Contains(laber[next.posX(), next.posY()]))
+                            {
+                                bool estaAdentro = Pila1.Contains(laber[next.posX(), next.posY()]);
+                                if (estaAdentro == false)
+                                {
+                                    Pila2.Push(laber[next.posX(), next.posY()]);
+                                    Console.WriteLine($"Guardando en Pila2 {next.posX()},{next.posY()}\n ");
+                                }
+
+                            }
+                        }
+                        next = PositionTemporary.Izquierda();
+                        if (EstaAdentroDelMaze(next) && MePuedoMover(next))
+                        {
+                            #region prueba de if
+                            /*
                             if (Pila1.Contains(next))
+                               {
+                                   Console.WriteLine("Next esta adentro de pila 1");
+                               }
+                               if (next.Equals(laber[0, 0]))
+                               {
+                                   Console.WriteLine("la pila next es7 la posicion inicial");
+                               }
+                               if (next== laber[0,0])
+                               {
+                                   Console.WriteLine("la pila next es la posicion inicial");
+                               }
+                               if (!Pila1.Contains(next))//aqui si acepta que ya hay uno igual adentro
+                               {
+                                   Console.WriteLine("!Next esta adentro de pila 1");
+                               }
+                               if (Pila2.Contains(next))
+                               {
+                                   Console.WriteLine(" next ya esta en pila2 esta adentro");
+                               }
+                               if (!Pila2.Contains(next))//me dice que no hay uno igual adentro
+                               {
+                                   Console.WriteLine("!next ya esta en pila2 adentro");
+                               }
+                               
+                            if((Pila1.Contains(laber[next.posX(), next.posY()]) == true)){
+                                Console.WriteLine("contine pila-1 a next");
+                            }*/
+                            #endregion prueba de if
+
+                            if (!Pila2.Contains(laber[next.posX(),next.posY()]))
                             {
-                                Console.WriteLine("la pila next esta adentro");
-                            }
-                            if (next.Equals(laber[0, 0]))
-                            {
-                                Console.WriteLine("la pila next es la posicion inicial");
-                            }
-                            if (next== laber[0,0])
-                            {
-                                Console.WriteLine("la pila next es la posicion inicial");
-                            }
-                            if (!Pila1.Contains(next))//aqui si acepta que ya hay uno igual adentro
-                            {
-                                Console.WriteLine("!la pila next esta adentro");
-                            }
-                            if (Pila2.Contains(next))
-                            {
-                                Console.WriteLine(" next ya esta en pila2 esta adentro");
-                            }
-                            if (!Pila2.Contains(next))//me dice que no hay uno igual adentro
-                            {
-                                Console.WriteLine("!next ya esta en pila2 adentro");
-                            }
-                            */
-                            if (!Pila2.Contains(next) || !Pila1.Contains(next))
-                            {
-                                Pila2.Push(next);
-                                Console.WriteLine($"Guardando en Pila2 {next.posX()},{next.posY()}\n ");
+                                bool estaAdentro = Pila1.Contains(laber[next.posX(), next.posY()]);
+                                if (estaAdentro==false) {
+                                    Pila2.Push(laber[next.posX(), next.posY()]);
+                                    Console.WriteLine($"Guardando en Pila2 {next.posX()},{next.posY()}\n ");
+                                }
+                               
                             }
                         }
                         
@@ -175,8 +205,12 @@ namespace LaberintoPruebaConsola
                         }
                         else
                         {
-                            Pila1.Push(pibote);
-                            Console.WriteLine($"Metiendo a la pila1 nuestro recorrido {pibote.posX()},{pibote.posY()}\n ");
+                            if (!Pila1.Contains(laber[PositionTemporary.posX(), PositionTemporary.posY()]))
+                            {
+
+                                Pila1.Push(laber[PositionTemporary.posX(), PositionTemporary.posY()]);
+                                Console.WriteLine($"Metiendo a la pila1 nuestro recorrido {PositionTemporary.posX()},{PositionTemporary.posY()}\n ");
+                            }
                         }
                         #endregion fin moverse
 
@@ -197,7 +231,7 @@ namespace LaberintoPruebaConsola
             }
             public bool EstaAdentroDelMaze(int x,int y)
             {
-                if (x>=0 && x< filas && x>=0 && x<columnas)
+                if (x>=0 && x< filas && y>=0 && y<columnas)
                 {
                     return true;
                 }
@@ -231,9 +265,10 @@ namespace LaberintoPruebaConsola
                 {
                     return false;
                 }
-                
-
-
+            }
+            public bool Contains(CoordinateAndValue c1)
+            {
+                return c1 == laber[c1.posX(), c1.posY()];
             }
         }
         #endregion Laberinto
@@ -277,8 +312,8 @@ namespace LaberintoPruebaConsola
                 return new CoordinateAndValue(this.x, this.y-1, this.v);
             }
             public static bool operator ==(CoordinateAndValue c1, CoordinateAndValue c2) => c1.v == c2.v && c1.y == c2.y && c1.x == c2.x;
-            public static bool operator !=(CoordinateAndValue c1, CoordinateAndValue c2) => c1.v != c2.v || c1.y != c2.y || c1.x == c2.x;
-
+            public static bool operator !=(CoordinateAndValue c1, CoordinateAndValue c2) => c1.v != c2.v || c1.y != c2.y || c1.x != c2.x;
+            
         }
         #endregion Posicion
 
