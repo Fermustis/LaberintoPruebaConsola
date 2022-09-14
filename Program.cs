@@ -78,23 +78,23 @@ namespace LaberintoPruebaConsola
                 while (Pila2.Count != 0)
                 {
 
-                    if (laber[0, 0].value() == 0  || laber[filas - 1, columnas - 1].value() == 0)
+                    if (laber[0, 0].value() == 0 || laber[filas - 1, columnas - 1].value() == 0)
                     {
                         Console.WriteLine("no hay salida");
-                       
+
                     }
                     else
                     {
-                      //  TemporaryPosition[0,0] = Pila2.Pop();
+                        //  TemporaryPosition[0,0] = Pila2.Pop();
                         // moverse de posicion
                         #region moverse
                         CoordinateAndValue pibote, next;
                         pibote = Pila2.Pop();
-                    
-                        if(pibote.posX()==filas-1 && pibote.posY() == columnas - 1)
+
+                        if (pibote.posX() == filas - 1 && pibote.posY() == columnas - 1)
                         {
                             Console.WriteLine("LLEGAMOS!");
-                            while(Pila1.Count != 0)
+                            while (Pila1.Count != 0)
                             {
                                 CoordinateAndValue aux;
                                 aux = Pila1.Pop();
@@ -112,7 +112,7 @@ namespace LaberintoPruebaConsola
                                 Pila2.Push(next);
                                 Console.WriteLine($"Guardando Pila2 {next.posX()},{next.posY()}\n ");
                             }
-                            
+
                         }
                         next = pibote.Abajo();
                         if (EstaAdentroDelMaze(next) && MePuedoMover(next))
@@ -126,8 +126,8 @@ namespace LaberintoPruebaConsola
                         next = pibote.Derecha();
                         if (EstaAdentroDelMaze(next) && MePuedoMover(next))
                         {
-                            
-                            
+
+
                             if (!Pila2.Contains(next) && !Pila1.Contains(next))
                             {
                                 Pila2.Push(next);
@@ -136,7 +136,7 @@ namespace LaberintoPruebaConsola
                         }
                         next = pibote.Izquierda();
                         if (EstaAdentroDelMaze(next) && MePuedoMover(next))
-                        {
+                        {/*
                             if (Pila1.Contains(next))
                             {
                                 Console.WriteLine("la pila next esta adentro");
@@ -149,8 +149,6 @@ namespace LaberintoPruebaConsola
                             {
                                 Console.WriteLine("la pila next es la posicion inicial");
                             }
-
-
                             if (!Pila1.Contains(next))//aqui si acepta que ya hay uno igual adentro
                             {
                                 Console.WriteLine("!la pila next esta adentro");
@@ -163,8 +161,8 @@ namespace LaberintoPruebaConsola
                             {
                                 Console.WriteLine("!next ya esta en pila2 adentro");
                             }
-
-                            if (!Pila2.Contains(next) && !Pila1.Contains(next))
+                            */
+                            if (!Pila2.Contains(next) || !Pila1.Contains(next))
                             {
                                 Pila2.Push(next);
                                 Console.WriteLine($"Guardando en Pila2 {next.posX()},{next.posY()}\n ");
@@ -278,6 +276,9 @@ namespace LaberintoPruebaConsola
             {
                 return new CoordinateAndValue(this.x, this.y-1, this.v);
             }
+            public static bool operator ==(CoordinateAndValue c1, CoordinateAndValue c2) => c1.v == c2.v && c1.y == c2.y && c1.x == c2.x;
+            public static bool operator !=(CoordinateAndValue c1, CoordinateAndValue c2) => c1.v != c2.v || c1.y != c2.y || c1.x == c2.x;
+
         }
         #endregion Posicion
 
